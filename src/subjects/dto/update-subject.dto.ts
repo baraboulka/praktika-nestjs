@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { IsInt, IsNotEmpty, IsNumber, IsPositive, IsString } from "class-validator"
 export class UpdateSubjectDto {
     @IsString()
     @IsNotEmpty()
@@ -10,5 +10,7 @@ export class UpdateSubjectDto {
 
     @IsNumber()
     @IsNotEmpty()
+    @IsPositive()
+    @IsInt()
     readonly weeklyAmount: number
 }
