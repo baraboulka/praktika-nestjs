@@ -14,7 +14,7 @@ import { SubjectsService } from './subjects.service';
 
 @Controller('subjects')
 export class SubjectsController {
-  constructor(private readonly subjectService: SubjectsService) {}
+  constructor(private readonly subjectService: SubjectsService) { }
 
   @Get()
   getSubjects(): Promise<SchoolSubject[]> {
@@ -22,7 +22,7 @@ export class SubjectsController {
   }
 
   @Get(':id')
-  getSubject(@Param('id') id: string): Promise<SchoolSubject> {
+  getSubject(@Param('id') id: string): Promise<SchoolSubject[]> {
     return this.subjectService.getSubject(id);
   }
 
@@ -41,7 +41,7 @@ export class SubjectsController {
   }
 
   @Delete()
-  removeSubjects(@Body() ids: string[]): Promise<SchoolSubject[]> {
+  removeSubjects(@Body() ids: string[]): Promise<SchoolSubject> {
     return this.subjectService.removeSubjects(ids);
   }
 }

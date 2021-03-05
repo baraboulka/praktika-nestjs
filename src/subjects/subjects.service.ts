@@ -13,11 +13,46 @@ export class SubjectsService {
   ) { }
 
   async getSubjects(): Promise<SchoolSubject[]> {
-    return this.schoolSubjectModel.find().exec();
+    const subjects = this.schoolSubjectModel
+      .aggregate()
+      .lookup({
+        from: 'teachers',
+        localField: 'teacher',
+        foreignField: '_id',
+        as: 'teacherInfo',
+      })
+      .project({
+        title: 1,
+        weeklyAmount: 1,
+        'teacherInfo._id': 1,
+        'teacherInfo.fullName': 1,
+        'teacherInfo.subjectsTaught': 1,
+      });
+
+    return subjects;
   }
 
-  async getSubject(id: string): Promise<SchoolSubject> {
-    return this.schoolSubjectModel.findById(id);
+  async getSubject(id: string): Promise<SchoolSubject[]> {
+    const subjects = await this.schoolSubjectModel
+      .aggregate()
+      .lookup({
+        from: 'teachers',
+        localField: 'teacher',
+        foreignField: '_id',
+        as: 'teacherInfo',
+      })
+      .project({
+        title: 1,
+        weeklyAmount: 1,
+        'teacherInfo._id': 1,
+        'teacherInfo.fullName': 1,
+        'teacherInfo.subjectsTaught': 1,
+      })
+      .then((subjects) =>
+        subjects.filter((subj) => subj['_id'].toString() === id),
+      );
+
+    return subjects;
   }
 
   createSubject(schoolSubjectDto: CreateSubjectDto): Promise<SchoolSubject> {
@@ -35,7 +70,10 @@ export class SubjectsService {
         new Promise((resolve, reject) => {
           this.schoolSubjectModel
             .findByIdAndUpdate(subj['_id'], subj, { new: true })
-            .then((response) => resolve(response))
+            .then((response) => {
+              console.log(response.teacher);
+              resolve(response);
+            })
             .catch((error) => reject(error));
         }),
       );
@@ -46,7 +84,7 @@ export class SubjectsService {
       .catch((err) => err);
   }
 
-  async removeSubjects(ids: string[]): Promise<SchoolSubject[]> {
+  async removeSubjects(ids: string[]): Promise<SchoolSubjectDocument> {
     return this.schoolSubjectModel.deleteMany({ _id: { $in: ids } });
   }
 }

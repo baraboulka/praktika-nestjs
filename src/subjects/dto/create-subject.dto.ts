@@ -1,21 +1,13 @@
-import {
-  IsInt,
-  IsNotEmpty,
-  IsNumber,
-  IsPositive,
-  IsString,
-} from 'class-validator';
+import { IsInt, IsNotEmpty, IsPositive, IsString } from 'class-validator';
+import { ISubjectTeacher } from '../schemas/subject.schema';
 
 export class CreateSubjectDto {
   @IsString()
   @IsNotEmpty()
   readonly title: string;
 
-  @IsString()
-  @IsNotEmpty()
-  readonly teacher: string;
+  readonly teacher: ISubjectTeacher[] | null;
 
-  @IsNumber()
   @IsNotEmpty()
   @IsPositive()
   @IsInt()

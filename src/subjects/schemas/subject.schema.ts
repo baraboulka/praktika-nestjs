@@ -1,17 +1,25 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-export type SchoolSubjectDocument = SchoolSubject & Document;
+export type SchoolSubjectDocument = SchoolSubject & mongoose.Document;
+
+export interface ISubjectTeacher {
+  id: { type: mongoose.Schema.Types.ObjectId; ref: 'Teacher' };
+}
 
 @Schema()
 export class SchoolSubject {
-  @Prop()
+  @Prop({ required: true })
   title: string;
 
-  @Prop()
-  teacher: string;
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Teacher',
+    required: true,
+  })
+  teacher: ISubjectTeacher[];
 
-  @Prop()
+  @Prop({ required: true })
   weeklyAmount: number;
 }
 
