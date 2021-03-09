@@ -1,12 +1,15 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { ObjectId } from 'mongoose';
+import {
+  ISchoolSubject,
+  ISubjectTeacher,
+} from 'src/subjects/schemas/subject.schema';
 
 export class CreateStudentDto {
   @IsString()
   @IsNotEmpty()
   readonly fullName: string;
 
-  readonly teacherAssigned: ObjectId[] | null;
+  readonly teacherAssigned: ISubjectTeacher[] | null;
 
-  readonly schedule: ObjectId[] | null;
+  readonly schedule: ISchoolSubject[] | null;
 }
