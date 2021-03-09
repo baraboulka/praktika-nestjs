@@ -7,6 +7,10 @@ export interface ISubjectTeacher {
   id: { type: mongoose.Schema.Types.ObjectId; ref: 'Teacher' };
 }
 
+export interface ISchoolSubject {
+  id: { type: mongoose.Schema.Types.ObjectId; ref: 'SchoolSubject' };
+}
+
 @Schema()
 export class SchoolSubject {
   @Prop({ required: true })

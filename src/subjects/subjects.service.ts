@@ -70,10 +70,7 @@ export class SubjectsService {
         new Promise((resolve, reject) => {
           this.schoolSubjectModel
             .findByIdAndUpdate(subj['_id'], subj, { new: true })
-            .then((response) => {
-              console.log(response.teacher);
-              resolve(response);
-            })
+            .then((response) => resolve(response))
             .catch((error) => reject(error));
         }),
       );
