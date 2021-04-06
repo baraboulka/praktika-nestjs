@@ -35,7 +35,7 @@ export class UsersService {
         as: 'subjectsAssigned',
       })
       .project({
-        userName: 1,
+        username: 1,
         'teacher._id': 1,
         'teacher.fullName': 1,
         'teacher.subjectsTaught': 1,
@@ -47,8 +47,8 @@ export class UsersService {
       .then((users) => users.filter((val) => val.isActive));
   }
 
-  async getUser(userName: string): Promise<User> {
-    const user = await this.userModel.findOne({ userName: userName });
+  async getUser(username: string): Promise<User> {
+    const user = await this.userModel.findOne({ username });
 
     console.log(user);
 

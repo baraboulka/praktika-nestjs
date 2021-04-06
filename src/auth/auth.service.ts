@@ -1,12 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
+import { UsersService } from 'src/users/users.service';
 import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) { }
 
   async registerUser(registrationData: RegisterDto) {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
@@ -23,9 +24,9 @@ export class AuthService {
     }
   }
 
-  async getAuthenticatedUser(userName: string, password: string) {
+  async getAuthenticatedUser(username: string, password: string) {
     try {
-      const user = await this.usersService.getUser(userName);
+      const user = await this.usersService.getUser(username);
 
       const isPasswordMatching = await bcrypt.compare(
         password,
@@ -39,7 +40,12 @@ export class AuthService {
         );
       }
 
-      return user;
+      const payload = { username };
+
+      const accessToken = this.jwtService.sign(payload);
+
+      return { accessToken };
+
     } catch (err) {
       throw new HttpException(
         'Please check your credentials!',

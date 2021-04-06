@@ -3,7 +3,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class RegisterDto {
   @IsString()
   @IsNotEmpty()
-  readonly userName: string;
+  readonly username: string;
 
   readonly foreignIds: [] | null;
 

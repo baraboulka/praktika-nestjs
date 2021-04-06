@@ -4,7 +4,7 @@ import * as mongoose from 'mongoose';
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
-  readonly userName: string;
+  readonly username: string;
 
   readonly foreignIds: mongoose.Schema.Types.ObjectId[] | null;
 

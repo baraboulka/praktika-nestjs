@@ -9,15 +9,13 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
     super();
   }
-  async validate(username: string, password: string): Promise<User> {
-    // const user = await this.authService.getAuthenticatedUser(username, password);
+  async validate(username: string, password: string): Promise<any> {
+    const accessToken = await this.authService.getAuthenticatedUser(username, password);
 
-    // if (!user) {
-    //   throw new UnauthorizedException();
-    // }
+    if (!accessToken) {
+      throw new UnauthorizedException('Invalid credentials!');
+    }
 
-    // return user;
-
-    return { userName: "mama", password: "mia" } as User
+    return accessToken;
   }
 }
